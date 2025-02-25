@@ -52,7 +52,6 @@ When Daniella opens up our “RetaiLense Executive Dashboard” she will be pres
 
 As a result of her findings from our dashboard, Daniella can determine which countries present the most promising opportunities for expansion. She can identify top-selling products and target regions where these products are underrepresented. Additionally, she can pinpoint peak sales periods in order to optimize inventory levels. With this strategic insight, Daniella can confidently recommend actions to support international growth, such as tailoring marketing campaigns for specific regions or adjusting inventory to meet customer demands.
 
-
 ## App sketch and description
 Here is our app sketch:
 
