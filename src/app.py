@@ -36,6 +36,17 @@ card_total_returns = dbc.Card(id='card-total-returns')
     Input('country-dropdown', 'value')
 )
 def plot_monthly_revenue_chart(start_date, end_date, selected_countries):
+    """
+    Generates a monthly revenue line chart using Altair.
+
+    Parameters:
+    - start_date (str): The start date selected in the date picker.
+    - end_date (str): The end date selected in the date picker.
+    - selected_countries (list): List of selected countries for filtering.
+
+    Returns:
+    - dict: Altair chart specification (JSON format).
+    """
     # Filter the data based on selected date range and countries
     filtered_df = df[(df['InvoiceDate'] >= pd.to_datetime(start_date)) & 
                      (df['InvoiceDate'] <= pd.to_datetime(end_date)) & 
@@ -65,7 +76,17 @@ def plot_monthly_revenue_chart(start_date, end_date, selected_countries):
     Input('country-dropdown', 'value')
 )
 def plot_waterfall_chart(start_date, end_date, selected_countries):
+    """
+    Creates a waterfall chart showing Gross Revenue, Refunds, and Net Revenue.
 
+    Parameters:
+    - start_date (str): The start date selected in the date picker.
+    - end_date (str): The end date selected in the date picker.
+    - selected_countries (list): List of selected countries for filtering.
+
+    Returns:
+    - dict: Altair chart specification (JSON format).
+    """
     # Filter the data based on selected date range and countries
     filtered_df = df[(df['InvoiceDate'] >= pd.to_datetime(start_date)) & 
                        (df['InvoiceDate'] <= pd.to_datetime(end_date)) & 
@@ -145,7 +166,18 @@ def plot_waterfall_chart(start_date, end_date, selected_countries):
     Input('country-dropdown', 'value')
 )
 def plot_top_products_revenue(start_date, end_date, selected_countries, n_products=10):
-    
+    """
+    Generates a bar chart for top products by revenue.
+
+    Parameters:
+    - start_date (str): The start date selected in the date picker.
+    - end_date (str): The end date selected in the date picker.
+    - selected_countries (list): List of selected countries for filtering.
+    - n_products (int): Number of top products to display (default: 10).
+
+    Returns:
+    - dict: Altair chart specification (JSON format).
+    """
     # Filter the data based on selected date range and countries
     filtered_df = df[
         (df['InvoiceDate'] >= pd.to_datetime(start_date)) & 
@@ -177,6 +209,12 @@ def plot_top_products_revenue(start_date, end_date, selected_countries, n_produc
 
 # Define the function to create the pie chart
 def plot_top_countries_pie_chart():
+    """
+    Creates a pie chart showing the top 5 countries (excluding the UK) by sales.
+
+    Returns:
+    - dict: Altair chart specification (JSON format).
+    """
     # Exclude the United Kingdom
     df_no_uk = df[df['Country'] != 'United Kingdom']
     
@@ -216,7 +254,21 @@ def plot_top_countries_pie_chart():
     Input('country-dropdown', 'value')
 )
 def update_cards(start_date, end_date, selected_countries):
+    """
+    Updates the key financial metric cards based on the selected date range and countries.
 
+    Parameters:
+    - start_date (str): The start date selected in the date picker.
+    - end_date (str): The end date selected in the date picker.
+    - selected_countries (list): List of selected countries for filtering.
+
+    Returns:
+    - tuple: A tuple containing the updated contents for four dashboard cards:
+        1. Loyal Customer Ratio (percentage)
+        2. Loyal Customer Sales (total revenue from known customers)
+        3. Net Sales (total revenue including refunds)
+        4. Total Returns (negative revenue from refunds)
+    """
     # Filter the data based on selected date range and countries
     filtered_df = df[(df['InvoiceDate'] >= pd.to_datetime(start_date)) & 
                      (df['InvoiceDate'] <= pd.to_datetime(end_date)) & 
@@ -267,8 +319,7 @@ def update_cards(start_date, end_date, selected_countries):
     return card_loyal_customer_ratio_content, card_loyal_customer_sales_content, card_net_sales_content, card_total_returns_content
 
 
-
-# Layout with Date Range Picker and Country Dropdown
+# Layout with Date Range Picker and Country Dropdown.
 app.layout = dbc.Container([
     dbc.Row(dbc.Col(html.H1('RetaiLense'))),
 
