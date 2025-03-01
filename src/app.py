@@ -21,7 +21,7 @@ app.title = "Monthly Revenue Dashboard"
 
 
 
-# Create the cards (initially empty, they will be updated dynamically)
+# Create the cards (initially empty, they will be updated dynamically).
 card_loyal_customer_ratio = dbc.Card(id='card-loyal-customer-ratio')
 card_loyal_customer_sales = dbc.Card(id='card-loyal-customer-sales')
 card_net_sales = dbc.Card(id='card-net-sales')
