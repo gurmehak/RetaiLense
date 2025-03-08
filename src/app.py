@@ -114,26 +114,26 @@ cards_layout = dbc.Row(
 product_bar_chart = dvc.Vega(
     id='product-bar-chart',
     spec={},
-    style={'width': '100%'}
+    style={'width': '100%', 'marginTop': '20px'}
     )
 
 country_pie_chart = dvc.Vega(
     id='country-pie-chart',
     signalsToObserve=["selected_country"],
     spec={},
-    style={'width': '100%'}
+    style={'width': '100%', 'marginTop': '20px'}
     )
 
 stacked_chart = dvc.Vega(
     id='stacked-chart',
     spec={},
-    style={'width': '100%'}
+    style={'width': '100%', 'marginTop': '20px'}
     )
 
 monthly_revenue_chart = dvc.Vega(
     id='monthly-revenue', 
     spec={},
-    style={'width': '100%'}
+    style={'width': '100%', 'marginTop': '20px'}
     )
 
 # Layout
@@ -148,7 +148,8 @@ app.layout = dbc.Container(
     dbc.Row(dbc.Col(html.H1(
         'RetaiLense',
         style={
-            'backgroundColor': '#034168',
+            'backgroundColor': '#1E3A4C',
+
             'color': 'white',             
             'padding': '5px',
             # 'borderRadius': '5px',
@@ -160,19 +161,35 @@ app.layout = dbc.Container(
 
     dbc.Row([
         dbc.Col(dbc.Row([
-            html.Label('Date Range:',
+            html.Label('Filters',
                        style={
-                           'color': 'white'
-                           }),
+                           'color': 'white',
+                           'marginTop': '40px',
+                           'fontSize': '22px', 
+                           'fontWeight': 'bold', 
+                           'fontFamily': 'inherit' # to match header font
+                            }),
+            html.Label('Date Range',
+                       style={
+                           'color': 'white',
+                           'marginTop': '30px',
+                           'fontSize': '18px', 
+                        #    'fontWeight': 'bold', 
+                           'fontFamily': 'inherit' # to match header font
+                            }),
             date_picker_range,
-            html.Label('Select Countries:', 
+            html.Label('Select Countries', 
                        style={
-                           'color': 'white'
+                           'color': 'white',
+                           'marginTop': '30px',
+                           'fontSize': '18px', 
+                        #    'fontWeight': 'bold', 
+                           'fontFamily': 'inherit' # to match header font
                            }),
             country_dropdown,
         ]), md=3, # Country dropdown on the left (adjust width)
         style={
-            'backgroundColor': '#67879B',
+            'backgroundColor': '#809DAF', 
             'padding': '20px',
             # 'borderRadius': '10px',
             'boxShadow': '2px 2px 10px rgba(0, 0, 0, 0.1)'
