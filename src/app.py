@@ -38,13 +38,78 @@ country_dropdown = dcc.Dropdown(
     style={ 'padding': '20px'}
     )
 
-card_loyal_customer_ratio = dbc.Card(id='card-loyal-customer-ratio')
+# card_loyal_customer_ratio = dbc.Card(id='card-loyal-customer-ratio')
 
-card_loyal_customer_sales = dbc.Card(id='card-loyal-customer-sales')
+# card_loyal_customer_sales = dbc.Card(id='card-loyal-customer-sales')
 
-card_net_sales = dbc.Card(id='card-net-sales')
+# card_net_sales = dbc.Card(id='card-net-sales')
 
-card_total_returns = dbc.Card(id='card-total-returns')
+# card_total_returns = dbc.Card(id='card-total-returns')
+
+# Cards with styling
+card_loyal_customer_ratio = dbc.Card(
+    id='card-loyal-customer-ratio',
+    style={
+        # 'backgroundColor': '#9CB4C3',  
+        'boxShadow': '2px 2px 10px rgba(0, 0, 0, 0.1)',
+        'textAlign': 'center',        
+        'display': 'flex',           
+        'alignItems': 'center',       
+        'justifyContent': 'center',  
+        'height': '100%'      
+    }
+)
+
+card_loyal_customer_sales = dbc.Card(
+    id='card-loyal-customer-sales',
+    style={
+        # 'backgroundColor': '#9CB4C3',  
+        'textAlign': 'center',  
+        'boxShadow': '2px 2px 10px rgba(0, 0, 0, 0.1)',
+        'display': 'flex',     
+        'alignItems': 'center', 
+        'justifyContent': 'center', 
+        'height': '100%'               
+    }
+)
+
+card_net_sales = dbc.Card(
+    id='card-net-sales',
+    style={
+        # 'backgroundColor': '#9CB4C3',  
+        'textAlign': 'center',
+        'boxShadow': '2px 2px 10px rgba(0, 0, 0, 0.1)',
+        'display': 'flex',  
+        'alignItems': 'center',  
+        'justifyContent': 'center',   
+        'height': '100%'          
+    }
+)
+
+card_total_returns = dbc.Card(
+    id='card-total-returns',
+    style={
+        # 'backgroundColor': '#fbb4ae',  
+        'boxShadow': '2px 2px 10px rgba(0, 0, 0, 0.1)',
+        'textAlign': 'center',      
+        'display': 'flex',           
+        'alignItems': 'center',    
+        'justifyContent': 'center',  
+        'height': '100%'       
+    }
+)
+
+# Layout for the cards
+cards_layout = dbc.Row(
+    [
+        dbc.Col(card_loyal_customer_ratio, md=3),
+        dbc.Col(card_loyal_customer_sales, md=3),
+        dbc.Col(card_net_sales, md=3),
+        dbc.Col(card_total_returns, md=3)
+    ],
+    style={'marginTop': '20px'}  # Add 20px space above the cards
+)
+
 
 product_bar_chart = dvc.Vega(
     id='product-bar-chart',
@@ -73,36 +138,49 @@ monthly_revenue_chart = dvc.Vega(
 
 # Layout
 
-app.layout = dbc.Container([
-    dcc.Store(id='selected-country-store', data=None),
-    dcc.Store(id='other-countries-store', data=[]),  # Stores list of "Others" countries
 
+app.layout = dbc.Container(
+    fluid=True,  # Make the container fluid to span the full width
+    style={'padding': '0'},  # Remove default padding 
+    children=[
+        dcc.Store(id='selected-country-store', data=None),
+        dcc.Store(id='other-countries-store', data=[]),  # Stores list of "Others" countries
     dbc.Row(dbc.Col(html.H1(
         'RetaiLense',
         style={
-            'backgroundColor': '#007bff',  
+            'backgroundColor': '#034168',
             'color': 'white',             
-            'padding': '10px',
-            'borderRadius': '5px',
-            'textAlign': 'center', 
-            'marginBottom': '20px'
-        }))),
+            'padding': '5px',
+            # 'borderRadius': '5px',
+            'textAlign': 'center',
+            'boxShadow': '2px 2px 10px rgba(0, 0, 0, 0.1)',
+            'marginBottom': '0' 
+    }
+        ))),
 
     dbc.Row([
         dbc.Col(dbc.Row([
-            html.Label('Date Range:'),
+            html.Label('Date Range:',
+                       style={
+                           'color': 'white'
+                           }),
             date_picker_range,
-            html.Label('Select Countries:'),
+            html.Label('Select Countries:', 
+                       style={
+                           'color': 'white'
+                           }),
             country_dropdown,
-        ]), md=3),  # Country dropdown on the left (adjust width)
+        ]), md=3, # Country dropdown on the left (adjust width)
+        style={
+            'backgroundColor': '#67879B',
+            'padding': '20px',
+            # 'borderRadius': '10px',
+            'boxShadow': '2px 2px 10px rgba(0, 0, 0, 0.1)'
+            }
+        ),  
         dbc.Col([
             # Cards in a grid layout
-            dbc.Row([
-                dbc.Col(card_loyal_customer_ratio), 
-                dbc.Col(card_loyal_customer_sales),
-                dbc.Col(card_net_sales),
-                dbc.Col(card_total_returns)
-            ]),
+            cards_layout,
             dbc.Row([
                 dbc.Col(dbc.Container([monthly_revenue_chart], fluid=True), md=6), 
                 dbc.Col(dbc.Container([country_pie_chart], fluid=True), md=6), 
@@ -401,19 +479,31 @@ def update_cards(start_date, end_date, selected_countries):
         loyal_customers_ratio = 0
     else:
         loyal_customers_ratio = loyal_customers / total_unique_customers
-    loyal_customer_ratio_value = f"{round(loyal_customers_ratio * 100, 2)}%"
+    loyal_customer_ratio_value = html.Span(
+        f"{round(loyal_customers_ratio * 100, 2)}%",
+        style={'color': '#034168', 'fontWeight': 'bold'}  # Light blue and bold
+    )
 
     # Calculate the loyal customer sales
     non_blank_customer_ids = filtered_df[filtered_df['CustomerID'].notna()]
     total_sales = non_blank_customer_ids['Revenue'].sum()
-    loyal_customer_sales_value = f"£{total_sales:,.2f}"
+    loyal_customer_sales_value = html.Span(
+        f"£{total_sales:,.2f}",
+        style={'color': '#034168', 'fontWeight': 'bold'}  # Light blue and bold
+    )
 
     # Calculate net sales
-    net_sales_value = f"£{filtered_df['Revenue'].sum():,.2f}"
+    net_sales_value = html.Span(
+        f"£{filtered_df['Revenue'].sum():,.2f}",
+        style={'color': '#034168', 'fontWeight': 'bold'}  # Light blue and bold
+    )
 
     # Calculate total returns
     returns = filtered_df[filtered_df['Revenue'] < 0]
-    total_returns_value = f"£{returns['Revenue'].sum():,.2f}"
+    total_returns_value = html.Span(
+        f"£{returns['Revenue'].sum():,.2f}",
+        style={'color': '#9A2A2A', 'fontWeight': 'bold'}  # Red and bold
+    )
 
     # Create the content for each card
     card_loyal_customer_ratio_content = [
