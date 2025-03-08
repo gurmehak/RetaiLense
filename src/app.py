@@ -77,7 +77,16 @@ app.layout = dbc.Container([
     dcc.Store(id='selected-country-store', data=None),
     dcc.Store(id='other-countries-store', data=[]),  # Stores list of "Others" countries
 
-    dbc.Row(dbc.Col(html.H1('RetaiLense'))),
+    dbc.Row(dbc.Col(html.H1(
+        'RetaiLense',
+        style={
+            'backgroundColor': '#007bff',  
+            'color': 'white',             
+            'padding': '10px',
+            'borderRadius': '5px',
+            'textAlign': 'center', 
+            'marginBottom': '20px'
+        }))),
 
     dbc.Row([
         dbc.Col(dbc.Row([
