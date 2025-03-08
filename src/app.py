@@ -141,7 +141,7 @@ monthly_revenue_chart = dvc.Vega(
 
 app.layout = dbc.Container(
     fluid=True,  # Make the container fluid to span the full width
-    style={'padding': '0'},  # Remove default padding 
+    style={'padding': '0', 'margin': '0'},  # Remove default padding 
     children=[
         dcc.Store(id='selected-country-store', data=None),
         dcc.Store(id='other-countries-store', data=[]),  # Stores list of "Others" countries
@@ -161,36 +161,46 @@ app.layout = dbc.Container(
 
     dbc.Row([
         dbc.Col(dbc.Row([
-            html.Label('Filters',
+            html.Label('   Filters',
                        style={
                            'color': 'white',
-                           'marginTop': '40px',
+                           'marginTop': '30px',
+                           'marginLeft': '10px',
+
                            'fontSize': '22px', 
                            'fontWeight': 'bold', 
                            'fontFamily': 'inherit' # to match header font
                             }),
-            html.Label('Date Range',
+
+            html.Label('   Date Range',
                        style={
                            'color': 'white',
                            'marginTop': '30px',
+                           'marginLeft': '10px',
+
                            'fontSize': '18px', 
                         #    'fontWeight': 'bold', 
                            'fontFamily': 'inherit' # to match header font
                             }),
             date_picker_range,
-            html.Label('Select Countries', 
+
+            html.Label('  Country', 
                        style={
                            'color': 'white',
-                           'marginTop': '30px',
+                           'marginTop': '20px',
+                           'marginLeft': '10px',
+
                            'fontSize': '18px', 
                         #    'fontWeight': 'bold', 
                            'fontFamily': 'inherit' # to match header font
                            }),
             country_dropdown,
-        ]), md=3, # Country dropdown on the left (adjust width)
+        ]), md=2, # Country dropdown on the left (adjust width)
         style={
             'backgroundColor': '#809DAF', 
-            'padding': '20px',
+
+            'padding': '10px',
+
             # 'borderRadius': '10px',
             'boxShadow': '2px 2px 10px rgba(0, 0, 0, 0.1)'
             }
@@ -199,15 +209,23 @@ app.layout = dbc.Container(
             # Cards in a grid layout
             cards_layout,
             dbc.Row([
-                dbc.Col(dbc.Container([monthly_revenue_chart], fluid=True), md=6), 
-                dbc.Col(dbc.Container([country_pie_chart], fluid=True), md=6), 
-            ]),
+                dbc.Col(dbc.Container([monthly_revenue_chart], fluid=True), md=8), 
+                dbc.Col(dbc.Container([stacked_chart], fluid=True), md=4)
+            ],
+            style={'marginRight': '0', 'paddingRight': '0'}
+            ),
             dbc.Row([
                 dbc.Col(dbc.Container([product_bar_chart], fluid=True), md=8),
-                dbc.Col(dbc.Container([stacked_chart], fluid=True), md=4)
-            ]),
-        ], md=9) 
-    ]),
+                dbc.Col(dbc.Container([country_pie_chart], fluid=True), md=4)
+            ],
+            style={'marginRight': '0', 'paddingRight': '0'}
+            ),
+        ], md=10,
+        style={'marginRight': '0', 'paddingRight': '0'}
+        )],
+    style={'marginRight': '0', 'paddingRight': '0'}
+    ),
+
 
      dbc.Row([
         dbc.Col([
@@ -498,7 +516,7 @@ def update_cards(start_date, end_date, selected_countries):
         loyal_customers_ratio = loyal_customers / total_unique_customers
     loyal_customer_ratio_value = html.Span(
         f"{round(loyal_customers_ratio * 100, 2)}%",
-        style={'color': '#034168', 'fontWeight': 'bold'}  # Light blue and bold
+        style={'color': '#034168', 'fontWeight': 'bold'}  
     )
 
     # Calculate the loyal customer sales
@@ -506,20 +524,20 @@ def update_cards(start_date, end_date, selected_countries):
     total_sales = non_blank_customer_ids['Revenue'].sum()
     loyal_customer_sales_value = html.Span(
         f"£{total_sales:,.2f}",
-        style={'color': '#034168', 'fontWeight': 'bold'}  # Light blue and bold
+        style={'color': '#034168', 'fontWeight': 'bold'}  
     )
 
     # Calculate net sales
     net_sales_value = html.Span(
         f"£{filtered_df['Revenue'].sum():,.2f}",
-        style={'color': '#034168', 'fontWeight': 'bold'}  # Light blue and bold
+        style={'color': '#034168', 'fontWeight': 'bold'}  
     )
 
     # Calculate total returns
     returns = filtered_df[filtered_df['Revenue'] < 0]
     total_returns_value = html.Span(
         f"£{returns['Revenue'].sum():,.2f}",
-        style={'color': '#9A2A2A', 'fontWeight': 'bold'}  # Red and bold
+        style={'color': '#9A2A2A', 'fontWeight': 'bold'}  
     )
 
     # Create the content for each card
