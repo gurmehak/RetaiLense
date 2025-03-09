@@ -42,6 +42,8 @@ app.layout = dbc.Container(
                                'fontWeight': 'bold', 
                                'fontFamily': 'inherit' # to match header font
                                 }),
+                                html.Hr(style={'borderBottom': '2px solid white', 'margin': '9px auto', 'width': '80%'}), # horizontal line 
+
                 html.Label('   Date Range',
                            style={
                                'color': 'white',
@@ -51,6 +53,7 @@ app.layout = dbc.Container(
                                'fontFamily': 'inherit' # to match header font
                                 }),
                 date_picker_range,
+                html.Hr(style={'borderBottom': '2px solid white', 'margin': '9px auto', 'width': '80%'}), # horizontal line 
                 html.Label('  Country', 
                            style={
                                'color': 'white',
@@ -60,6 +63,7 @@ app.layout = dbc.Container(
                                'fontFamily': 'inherit' # to match header font
                                }),
                 country_dropdown,
+                html.Hr(style={'borderBottom': '2px solid white', 'margin': '9px auto', 'width': '80%'}), # horizontal line 
             ]), md=2, # Country dropdown on the left (adjust width)
             style={
                 'backgroundColor': '#809DAF', 
@@ -97,11 +101,22 @@ app.layout = dbc.Container(
                            style={"font-size": "12px"}),
                     html.A("GitHub Repository", href="https://github.com/UBC-MDS/DSCI-532_2025_9_RetaiLense",
                            target="_blank", style={"font-size": "12px"}),
-                    html.P("Last updated on Feb 28, 2025",
-                           style={"font-size": "12px"}),
-                ])
+                ],
+                style={
+                    'textAlign': 'center',  # Center-align text horizontally
+                    # 'display': 'flex',      # Use flexbox for layout
+                    # 'flexDirection': 'column',  # Stack children vertically
+                    'alignItems': 'center',  # Center-align children horizontally
+                    'justifyContent': 'center',  # Center-align children vertically
+                    'margin': '0 auto',  # Center the div itself horizontally
+                    # 'maxWidth': '800px',  # width of the description
+                    # 'padding': '20px',  # Add padding
+                    'paddingLeft': '20x'
+                })
             ], md=12),
-        ]),
+        ],
+        style={'marginTop': '20px'} 
+        ),
     ]
 )
 
