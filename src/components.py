@@ -1,6 +1,7 @@
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 import dash_vega_components as dvc
+import pandas as pd
 
 from .data import df
 
@@ -9,6 +10,8 @@ date_picker_range = dcc.DatePickerRange(
     id='date-picker-range',
     start_date=df['InvoiceDate'].min().strftime('%Y-%m-%d'),
     end_date=df['InvoiceDate'].max().strftime('%Y-%m-%d'),
+    min_date_allowed=pd.to_datetime('2010-12-01'), 
+    max_date_allowed=pd.to_datetime('2011-12-31'),
     display_format='YYYY-MM-DD',
     style={'padding': '20px'}
 )
