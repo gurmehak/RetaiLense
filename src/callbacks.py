@@ -2,6 +2,7 @@ from dash import Output, Input, callback, State, html
 import pandas as pd
 import altair as alt
 import dash_bootstrap_components as dbc
+from textwrap import wrap
 
 from .data import df
 from .app import cache
@@ -35,7 +36,7 @@ def plot_monthly_revenue_chart(start_date, end_date, selected_countries):
     # Create the Altair chart
     monthly_revenue_chart = alt.Chart(
         filtered_df.groupby('MonthYear')['Revenue'].sum().reset_index()
-    ).mark_line(point=True).encode(
+    ).mark_line(point=True, color='#361162').encode(
         x=alt.X('MonthYear:N', 
                 sort=pd.to_datetime(filtered_df['MonthYear'].unique(), format='%b-%Y').sort_values().strftime('%b-%Y').tolist(), 
                 title='Month-Year'),
@@ -96,7 +97,7 @@ def plot_stacked_chart(start_date, end_date, selected_countries):
     chart = alt.Chart(working_df).mark_bar(size=40).encode(  # Adjust size here
         x=alt.X('Total:Q', title='Total Gross Revenue'),
         y=alt.Y('Value:Q', title='Amount (£)'),
-        color=alt.Color('Component:N', scale=alt.Scale(domain=['Refunds', 'Net Revenue'], range=['#fbb4ae', '#ccebc5']),
+        color=alt.Color('Component:N', scale=alt.Scale(domain=['Refunds', 'Net Revenue'], range=['#9A2A2A', '#ffcc87']),
                         legend=alt.Legend(title='Category')
                        ),
         order=alt.Order('Component:N', sort='ascending'),  # Ensure correct stacking order,
@@ -147,22 +148,34 @@ def plot_top_products_revenue(start_date, end_date, selected_countries, n_produc
         .head(n_products)
         .reset_index())
     
-    # Add new column to store the first three words of Description
-    product_revenue['ProductName'] = product_revenue['Description'].str.split().str[:3].str.join(sep=" ").str.title() + "..."
-    
-    # plot the bar chart
+    # Wrap on whitespace with a max line length of 30 chars
+    product_revenue['Product'] = product_revenue['Description'].apply(wrap, args=[30])
+
+    # Assign a rank to each product based on its position in the top 10
+    product_revenue['Rank'] = range(1, len(product_revenue) + 1)
+
+    # Define a consistent color scheme for the top 10 positions
+    top_colors = [
+        '#150e37', '#3b0f70', '#651a80', '#8c2a81', '#b6377a',
+        '#de4968', '#f76f5c', '#fe9f6d', '#fece91', '#e8d3bd'
+    ]
+
+    # Map the rank to the corresponding color
+    product_revenue['Color'] = product_revenue['Rank'].apply(lambda x: top_colors[x - 1])
+
+    # Plot the bar chart with consistent colors for the top 10 positions
     bar_chart = alt.Chart(product_revenue).mark_bar().encode(
         x=alt.X('Revenue:Q', title='Revenue (£)'),
-        y=alt.Y('ProductName:N', sort='-x', title='Product Name'),
-        color=alt.Color('ProductName:N', scale=alt.Scale(scheme='pastel1'), legend=None),
-        tooltip=[  # Format tooltip values with commas
+        y=alt.Y('Product:N', sort='-x', title='Product Name'),
+        color=alt.Color('Color:N', scale=None, legend=None),  # Use consistent colors
+        tooltip=[  
             alt.Tooltip('Description:N', title='Description'),
             alt.Tooltip('Revenue:Q', title='Revenue (£)', format=",.0f")
         ]
     ).properties(
         title=f'Top {n_products} Products by Revenue',
         width='container',
-        height = 300
+        height=300
     )
     
     return bar_chart.to_dict()
@@ -224,7 +237,7 @@ def plot_top_countries_pie_chart(start_date, end_date):
     )
     
     chart = pie_chart.mark_arc(outerRadius=120).encode(
-         color=alt.Color(field="Country", type="nominal", scale=alt.Scale(scheme='pastel1'), legend=None)
+         color=alt.Color(field="Country", type="nominal", scale=alt.Scale(scheme='magma'), legend=None)
     ).add_params(selection).properties(
         title="Top 5 Countries Outside of the UK",
         width='container',
