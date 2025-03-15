@@ -1,9 +1,3 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
 # RetaiLense
 
 Authors: Ashita Diwan @diwanashita, Gurmehak Kaur @gurmehak, Meagan
