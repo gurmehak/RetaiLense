@@ -1,7 +1,7 @@
 # RetaiLense
 
-Authors: Gurmehak Kaur @gurmehak, Ashita Diwan @diwanashita, Meagan
-Gardner @meagangardner, and Wai Ming Wong @waiming
+Authors: Gurmehak Kaur, Ashita Diwan, Meagan
+Gardner, and Wai Ming Wong
 
 ## About RetaiLense
 
